@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// models/postmodels.js
+import mongoose from "mongoose";
 
 const postsSchema = new mongoose.Schema({
     title: {
@@ -22,14 +23,14 @@ const postsSchema = new mongoose.Schema({
 });
 
 // Static method to create a post
-postsSchema.statics.createPost = async function(postData) {
+postsSchema.statics.createPost = async function({ title, content }) {
     try {
-        const post = new this ({
+        const post = new this({
             title,
             content
         });
-        const newpost=await post.save();
-        return newpost;
+        const newPost = await post.save();
+        return newPost;
     } catch (error) {
         throw new Error('Error creating post: ' + error.message);
     }
@@ -45,7 +46,5 @@ postsSchema.statics.getAllPosts = async function() {
     }
 };
 
-const postsModel = mongoose.model('Posts', postsSchema);
-
-module.exports = postsModel;
- 
+// ✅ default export for ESM
+export default mongoose.model('Posts', postsSchema);

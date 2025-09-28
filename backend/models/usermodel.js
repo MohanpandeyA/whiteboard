@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const validator = require('validator');
+// models/usermodel.js
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import validator from "validator";
 
-const userschema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true, maxLength: 50 },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minLength: 8 }
@@ -12,7 +13,7 @@ const userschema = new mongoose.Schema({
 });
 
 // Register
-userschema.statics.register = async function (name, email, password) {
+UserSchema.statics.register = async function(name, email, password) {
     if (!validator.isEmail(email)) throw new Error('Invalid email format');
     if (!validator.isStrongPassword(password, { minLength: 8 })) throw new Error('Password is not strong enough');
 
@@ -24,12 +25,12 @@ userschema.statics.register = async function (name, email, password) {
 };
 
 // Get all users
-userschema.statics.getAllUsers = async function () {
+UserSchema.statics.getAllUsers = async function() {
     return await this.find();
 };
 
 // Login
-userschema.statics.login = async function (email, password) {
+UserSchema.statics.login = async function(email, password) {
     const user = await this.findOne({ email });
     if (!user) throw new Error('Invalid login credentials');
     const isValid = await bcrypt.compare(password, user.password);
@@ -38,9 +39,9 @@ userschema.statics.login = async function (email, password) {
 };
 
 // Get a single user
-userschema.statics.getUser = async function (email) {
+UserSchema.statics.getUser = async function(email) {
     return await this.findOne({ email });
 };
 
-const User = mongoose.model('User', userschema);
-module.exports = User;
+// ✅ default export for ESM
+export default mongoose.model("User", UserSchema);
