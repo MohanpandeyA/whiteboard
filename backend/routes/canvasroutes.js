@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllCanvas, createCanvas } from "../controllers/canvascontroller.js"; // ✅ fixed path
+import { getAllCanvas, createCanvas,deleteCanvas} from "../controllers/canvascontroller.js"; // ✅ fixed path
 import authenticationMiddleware from "../middleware/authmiddleware.js";
 
 const router = Router();
@@ -10,5 +10,5 @@ router.post("/", authenticationMiddleware, createCanvas);
 router.get("/", authenticationMiddleware, getAllCanvas);
 
 //delete canvas route
-router.delete("/delete/:canvasId", authMiddleware, deleteCanvas);
+router.delete("/delete/:canvasId", authenticationMiddleware, deleteCanvas);
 export default router;
