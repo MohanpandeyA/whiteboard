@@ -1,32 +1,46 @@
-// import Board from "./components/Board";
-// import Toolbar from "./components/Toolbar";
-// import Toolbox from "./components/Toolbox";
-// import BoardProvider from "./store/BoardProvider";
-// import ToolboxProvider from "./store/ToolboxProvider";
-import React, { useState, useEffect } from 'react';
-
+// src/App.js
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./store/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import BoardPage from "./pages/BoardPage";
 
 function App() {
-  const [data, setData] = useState(null);
-
-    useEffect(() => {
-        fetch('http://localhost:3030/api/register')
-            .then(response => response.json())
-            .then(data => setData(data))
-            .catch(error => console.error('Error fetching data:', error));
-    }, []);
   return (
-    // <BoardProvider>
-    //   <ToolboxProvider>
-    //     <Toolbar />
-    //     <Board />
-    //     <Toolbox />
-    //   </ToolboxProvider>
-    // </BoardProvider>
-    <div>
-      <h1>whitebord</h1>
-      <p>{data?data.message:'Loading...'}</p>
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Protected routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/board/:canvasId"
+            element={
+              <PrivateRoute>
+                <BoardPage />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Default redirect */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

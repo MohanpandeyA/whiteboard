@@ -5,7 +5,7 @@ import validator from "validator";
 
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true, maxLength: 50 },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true, minLength: 8 }
 }, {
     timestamps: true,
@@ -14,31 +14,29 @@ const UserSchema = new mongoose.Schema({
 
 // Register
 UserSchema.statics.register = async function(name, email, password) {
-    if (!validator.isEmail(email)) throw new Error('Invalid email format');
-    if (!validator.isStrongPassword(password, { minLength: 8 })) throw new Error('Password is not strong enough');
+    if (!name || typeof name !== "string") throw new Error("Invalid name");
+    if (!validator.isEmail(email)) throw new Error("Invalid email format");
+    if (!validator.isStrongPassword(password, { minLength: 8 })) {
+        throw new Error("Password must be at least 8 characters with uppercase, number and symbol");
+    }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(12); // increased from 10 to 12 rounds
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = new this({ name, email, password: hashedPassword });
     return await user.save();
 };
 
-// Get all users
-UserSchema.statics.getAllUsers = async function() {
-    return await this.find();
-};
-
 // Login
 UserSchema.statics.login = async function(email, password) {
     const user = await this.findOne({ email });
-    if (!user) throw new Error('Invalid login credentials');
+    if (!user) throw new Error("Invalid login credentials");
     const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) throw new Error('Invalid login credentials');
+    if (!isValid) throw new Error("Invalid login credentials");
     return user;
 };
 
-// Get a single user
+// Get a single user (never returns password in application code — use safeUser() in controller)
 UserSchema.statics.getUser = async function(email) {
     return await this.findOne({ email });
 };

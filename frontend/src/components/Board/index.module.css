@@ -1,5 +1,5 @@
 .textElementBox {
-  position: fixed;
+  position: absolute;
   border: none;
   background: transparent;
   resize: none;
@@ -7,11 +7,13 @@
   padding: 0;
   margin: 0;
   width: auto;
+  min-width: 4px;
   height: auto;
   overflow: hidden;
   font-size: inherit;
-  font-family: inherit;
   color: inherit;
-  line-height: inherit;
-  font-family: "Caveat";
+  line-height: 1.2;
+  /* Same font as canvas rendering — Patrick Hand */
+  font-family: "Patrick Hand", sans-serif;
+  font-weight: 400;
 }

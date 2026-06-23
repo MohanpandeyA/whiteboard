@@ -1,17 +1,51 @@
 .container {
-  @apply absolute left-1/2 top-5 px-3 py-2 flex rounded border border-gray-400;
-  transform: translateX(-50%);
-  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #111111;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  border-radius: 14px;
+  padding: 8px 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(220, 38, 38, 0.1);
+  z-index: 100;
+  gap: 2px;
 }
 
 .toolItem {
-  @apply flex justify-center items-center text-xl p-3 text-black mr-5 last:mr-0 cursor-pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 17px;
+  width: 36px;
+  height: 36px;
+  color: #d1d5db;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  border: none;
+  background: transparent;
+  flex-shrink: 0;
 }
 
 .toolItem:hover {
-  @apply bg-blue-50 text-gray-700 rounded;
+  background: rgba(220, 38, 38, 0.12);
+  color: #ffffff;
 }
 
 .toolItem.active {
-  @apply bg-blue-200 text-gray-700 rounded;
+  background: rgba(220, 38, 38, 0.25);
+  color: #ef4444;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.4);
+}
+
+.divider {
+  width: 22px;
+  height: 1px;
+  background: rgba(220, 38, 38, 0.2);
+  margin: 4px 0;
+  flex-shrink: 0;
 }

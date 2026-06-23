@@ -1,13 +1,10 @@
-const Post = require('../models/postmodels'); // Assuming you have a Post model
+// controllers/postcontroller.js
+import Post from '../models/postmodels.js';
 
-const createPost = async (req, res) => {
+export const createPost = async (req, res) => {
     try {
         const { title, content } = req.body;
-
-        // Create a new post
-        const newPost = await Post.create({ title, content });
-
-        // Send response
+        const newPost = await Post.createPost({ title, content });
         res.status(201).json({
             success: true,
             data: newPost,
@@ -20,13 +17,12 @@ const createPost = async (req, res) => {
         });
     }
 };
-const getPosts = async (req, res) => {
+
+export const getPosts = async (req, res) => {
     try {
-        const posts = await Posts.getPosts();
+        const posts = await Post.getAllPosts();
         res.status(200).json(posts);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
-;
-module.exports = { createPost, getPosts };  
