@@ -24,6 +24,9 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
 
+// Trust Render/Heroku/Vercel reverse proxy (required for express-rate-limit)
+app.set('trust proxy', 1);
+
 // ── CORS ──────────────────────────────────────────────────────────────────────
 app.use(cors({
   origin: (origin, callback) => {
